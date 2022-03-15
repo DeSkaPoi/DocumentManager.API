@@ -1,0 +1,111 @@
+﻿<div class="main">
+    <aside class="conteinerMenu">
+        <div class="brandTab">
+            <div class="barItem">
+                <a class="barLink">
+                    <div class="barIcon">
+                        <img style="width:32px; height: 32px" src="https://blazorise.com/img/logos/blazorise-small.png">
+                    </div>
+                    MicroCMS
+                </a>
+            </div>
+        </div>
+        @foreach (TabPage tabPage in Pages)
+        {
+            <button class="@GetButtonClass(tabPage) buttonClass"
+                    @onclick=@( () => ActivatePage(tabPage) )>
+                <Icon class="barLink" Name="@IconMade(tabPage.Text)" />
+                @tabPage.Text
+            </button>
+        }
+    </aside>
+    <section class="conteinerPage">
+        <header class="header">
+            
+        </header>
+        <main class="childPage">
+            <div class="directory">
+                <nav>
+                    <ol class="Thread">
+                        <li class="breadcrumb-item">
+                            <a href="#">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="#">Library</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Data
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="BarAddIcon">
+                <button class="@GetButtonClassicon() buttonClassIcon"
+                        @onclick=@( () => ActivatePageicon())> 
+                    <Icon Name="IconName.Add" />
+                </button>
+            </div>
+            <CascadingValue Value="this">
+                @ChildContent
+            </CascadingValue>
+        </main>
+    </section>
+    
+</div>
+
+    @code {
+        // Next line is needed so we are able to add <TabPage> components inside
+
+        private bool terk = false;
+        [Parameter]
+        public RenderFragment ChildContent { get; set; }
+
+        public TabPage ActivePage { get; set; }
+        List<TabPage> Pages = new List<TabPage>();
+        internal void AddPage(TabPage tabPage)
+        {
+            Pages.Add(tabPage);
+            if (Pages.Count == 1)
+                ActivePage = tabPage;
+            StateHasChanged();
+        }
+
+        string GetButtonClass(TabPage page)
+        {
+            return page == ActivePage ? "buttonClass barButtomActive" : "buttonClass barButtom";
+        }
+
+        string GetButtonClassicon()
+        {
+            return terk == true ? "buttonClass barButtomActive" : "buttonClass barButtom";
+        }
+
+        void ActivatePage(TabPage page)
+        {
+            ActivePage = page;
+        }
+
+        void ActivatePageicon()
+        {
+            terk = !terk;
+        }
+
+
+
+        IconName IconMade(string name)
+        {
+            if (name == "Files")
+            {
+                return IconName.FileAlt;
+            }
+            else if (name == "Documents")
+            {
+                return IconName.Folder;
+            }
+            else if (name == "Pictures")
+            {
+                return IconName.TicketAlt;
+            }
+            else return IconName.Video;
+        }
+    }

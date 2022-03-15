@@ -1,0 +1,53 @@
+﻿@page "/fetchdata"
+@inject HttpClient Http
+@using ModelDomain
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (Documents == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+<DataGrid TItem="Document"
+          Data="@Documents">
+    <DataGridColumns>
+        <DataGridCommandColumn TItem="Document">
+            <NewCommandTemplate>
+                <Button Color="Color.Success" Clicked="@context.Clicked">New</Button>
+            </NewCommandTemplate>
+            <EditCommandTemplate>
+                <Button Color="Color.Primary" Clicked="@context.Clicked">Edit</Button>
+            </EditCommandTemplate>
+        </DataGridCommandColumn>
+        <DataGridColumn TItem="Document" Field="@nameof(Document.Title)" Caption="Title" Editable />
+        <DataGridColumn TItem="Document" Field="@nameof(Document.Content)" Caption="Content" Editable />
+        <DataGridColumn TItem="Document" Field="@nameof(Document.Description)" Caption="Description" Editable />
+        <DataGridColumn TItem="Document" Field="@nameof(Document.CreationTime)" Caption="Creation Time" Editable />
+        <DataGridColumn TItem="Document" Field="@nameof(Document.LastUpdate)" Caption="Last Update" Editable />
+    </DataGridColumns>
+</DataGrid> 
+}
+
+@code {
+    private Document[] Documents;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Documents = await Http.GetFromJsonAsync<Document[]>("sample-data/doc.json");
+    }
+
+    public class WeatherForecast
+    {
+        public DateTime Date { get; set; }
+
+        public int TemperatureC { get; set; }
+
+        public string Summary { get; set; }
+
+        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    }
+}

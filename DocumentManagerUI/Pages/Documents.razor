@@ -1,0 +1,60 @@
+﻿@using ModelDomain
+@using System.Net.Http
+@inject HttpClient Http
+@using System.Net.Http.Json
+@using System.Threading.Tasks
+@using Blazorise.DataGrid
+
+<DataGrid TItem="Document"
+        Data="@documentList"
+        @bind-SelectedRow="@selectedDocument"
+        PageSize="5"
+        Hoverable="true"
+        Resizable="true"
+        HeaderThemeContrast="ThemeContrast.Light"
+        Narrow="true"
+        Editable
+        Responsive
+        ShowPager
+        CommandMode="DataGridCommandMode.Commands"
+        EditMode="DataGridEditMode.Popup">
+        <DataGridColumns>
+            <DataGridColumn TItem="Document" Field="@nameof(Document.Title)" Caption="Title" Editable/>
+            <DataGridColumn TItem="Document" Field="@nameof(Document.Content)" Caption="Content" Editable />
+            <DataGridColumn TItem="Document" Field="@nameof(Document.Description)" Caption="Description" Editable />
+            <DataGridColumn TItem="Document" Field="@nameof(Document.CreationTime)" Caption="Creation Time" Editable />
+            <DataGridColumn TItem="Document" Field="@nameof(Document.LastUpdate)" Caption="Last Update" Editable>
+                <EditTemplate>
+                    <NumericEdit TValue="DateTime" Value="@((DateTime)context.CellValue)" ValueChanged="@( v => context.CellValue = v)" />
+                </EditTemplate>
+            </DataGridColumn>
+
+            <DataGridCommandColumn TItem="Document">
+                <EditCommandTemplate>
+                    <Button>
+                        <Icon Name="IconName.Pen" />
+                    </Button>
+                </EditCommandTemplate>
+                <NewCommandTemplate>Action</NewCommandTemplate>
+                <DeleteCommandTemplate></DeleteCommandTemplate>
+            </DataGridCommandColumn>
+        </DataGridColumns>
+        
+        <NextPageButtonTemplate>></NextPageButtonTemplate>
+        <FirstPageButtonTemplate>first</FirstPageButtonTemplate>
+        <PreviousPageButtonTemplate>&lt;</PreviousPageButtonTemplate>
+        <LastPageButtonTemplate>last</LastPageButtonTemplate>
+        <LoadingTemplate> </LoadingTemplate>
+</DataGrid>
+
+@code{
+    private List<Document> documentList;
+    private Document selectedDocument;
+    private DataGrid<Document> DataGri;
+
+    protected override async Task OnInitializedAsync()
+    {
+        
+        documentList = await Http.GetFromJsonAsync<List<Document>>("https://localhost:5001/api/Documents");
+    }
+}
