@@ -8,16 +8,16 @@ namespace DocumentManager.Domain
 {
     public class Document
     {
-        public Guid Id { get; private set; }
-        public string Title { get; private set; }
-        public string Content { get; private set; } 
-        public string Description { get; private set; }
-        public DateTime CreationTime { get; private set; }
-        public DateTime LastUpdate { get; private set; }
+        public Guid Id { get; set; }
+        public string Title { get; set; }
+        public string Content { get; set; } 
+        public string Description { get; set; }
+        public DateTime CreationTime { get; set; }
+        public DateTime LastUpdate { get; set; }
 
-        public List<FileLink> Files { get; private set; } 
-        public List<PictureLink> Pictures { get; private set; } 
-        public List<VideoLink> Videos { get; private set; } 
+        public List<FileLink> Files { get; set; } 
+        public List<PictureLink> Pictures { get; set; } 
+        public List<VideoLink> Videos { get; set; } 
 
         public Document()
         {
