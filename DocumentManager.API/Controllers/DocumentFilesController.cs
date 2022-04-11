@@ -23,9 +23,16 @@ namespace DocumentManager.API.Controllers
         }
 
         [HttpGet("{idDoc}")]
-        public async Task<Document> GetFilesDocument(Guid idDoc)
+        public async Task<ActionResult<Document>> GetFilesDocument(Guid idDoc)
         {
-            return await repository.GetByIdFilesAsync(idDoc);
+            try
+            {
+                return await repository.GetByIdFilesAsync(idDoc);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(404, ex.Message);
+            }
         }
 
         [HttpPost("{idDoc:Guid}/{idFile:Guid}")]
@@ -34,12 +41,12 @@ namespace DocumentManager.API.Controllers
             var document = await repository.GetByIdFilesAsync(idDoc);
             if (document == null)
             {
-                return BadRequest();
+                return StatusCode(400);
             }
             FileLink fileLink = new FileLink(idFile);
             document.Files.Add(fileLink);
             await repository.UpdateAsync(document);
-            return CreatedAtAction("PostFileDocument", new { id = fileLink.Id }, fileLink);
+            return StatusCode(201);
         }
 
         [HttpDelete("{idDoc}/{idFileLink}")]
@@ -49,7 +56,7 @@ namespace DocumentManager.API.Controllers
             var delFile = document.Files.Where(f => f.Id == idFileLink).FirstOrDefault();
             document.Files.Remove(delFile);
             await repository.UpdateAsync(document);
-            return NoContent();
+            return StatusCode(204);
         }
     }
 }

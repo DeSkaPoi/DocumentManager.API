@@ -21,7 +21,7 @@ namespace DocumentManager.Infrastructure
         {
             Document tmp = await context.Documents.FindAsync(document.Id);
             if (tmp != null)
-                return;
+                throw new Exception("this object exists");
             await context.AddAsync(document);
             await context.SaveChangesAsync(); 
         }
@@ -35,7 +35,7 @@ namespace DocumentManager.Infrastructure
         {
             Document tmp = await context.Documents.FindAsync(idDoc);
             if (tmp == null)
-                throw new Exception();
+                throw new Exception("it is impossible to delete what is not");
             context.Remove(tmp);
             await context.SaveChangesAsync();
         }

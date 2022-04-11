@@ -23,9 +23,16 @@ namespace DocumentManager.API.Controllers
         }
 
         [HttpGet("{idDoc}")]
-        public async Task<Document> GetPicturesDocument(Guid idDoc)
+        public async Task<ActionResult<Document>> GetPicturesDocument(Guid idDoc)
         {
-            return await repository.GetByIdPicturesAsync(idDoc);
+            try
+            {
+                return await repository.GetByIdPicturesAsync(idDoc);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(404, ex.Message);
+            }
         }
 
         [HttpPost("{idDoc:Guid}/{idPicture:Guid}")]
@@ -34,12 +41,12 @@ namespace DocumentManager.API.Controllers
             var document = await repository.GetByIdPicturesAsync(idDoc);
             if (document == null)
             {
-                return BadRequest("dsssd");
+                return StatusCode(400);
             }
             PictureLink pictureLink = new PictureLink(idPicture);
             document.Pictures.Add(pictureLink);
             await repository.UpdateAsync(document);
-            return CreatedAtAction("PostPictureDocument", new { id = pictureLink.Id }, pictureLink);
+            return StatusCode(201);
         }
 
         [HttpDelete("{idDoc}/{idPictureLink}")]
@@ -49,7 +56,7 @@ namespace DocumentManager.API.Controllers
             var delPicture = document.Pictures.Where(f => f.Id == idPictureLink).FirstOrDefault();
             document.Pictures.Remove(delPicture);
             await repository.UpdateAsync(document);
-            return NoContent();
+            return StatusCode(204);
         }
     }
 }

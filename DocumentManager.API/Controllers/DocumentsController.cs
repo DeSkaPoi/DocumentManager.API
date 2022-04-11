@@ -24,9 +24,18 @@ namespace DocumentManager.API.Controllers
 
         // GET: api/Documents
         [HttpGet]
-        public async Task<IReadOnlyList<Document>> GetDocuments() 
+        public async Task<ActionResult<IReadOnlyList<Document>>> GetDocuments() 
         {
-            return await repository.GetAllAsync();
+            try
+            {
+                var documents = await repository.GetAllAsync();
+                var action = new ActionResult<IReadOnlyList<Document>>(documents);
+                return action; 
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(404, ex.Message);
+            }
         }
 
         // GET: api/Documents/5
@@ -34,12 +43,10 @@ namespace DocumentManager.API.Controllers
         public async Task<ActionResult<Document>> GetDocument(Guid id)
         {
             var document = await repository.GetByIdAsync(id);
-
             if (document == null)
             {
-                return NotFound();
+                return StatusCode(404, $"Not found {id}");
             }
-
             return document;
         }
 
@@ -50,10 +57,17 @@ namespace DocumentManager.API.Controllers
         {
             if (id != document.Id)
             {
-                return BadRequest();
+                return StatusCode(400);
             }
-            await repository.UpdateAsync(document);
-            return NoContent();
+            try
+            {
+                await repository.UpdateAsync(document);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+            return StatusCode(204, document);
         }
 
         // POST: api/Documents
@@ -61,8 +75,15 @@ namespace DocumentManager.API.Controllers
         [HttpPost]
         public async Task<ActionResult<Document>> PostDocument(Document document)
         {
-            await repository.AddAsync(document);
-            return CreatedAtAction("GetDocument", new { id = document.Id }, document);
+            try
+            {
+                await repository.AddAsync(document);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+            return StatusCode(201, document);
         }
 
         // DELETE: api/Documents/5
@@ -73,36 +94,11 @@ namespace DocumentManager.API.Controllers
             {
                 await repository.DeleteAsync(id); 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return NotFound(id);
+                return StatusCode(404, ex.Message);
             }
-            return NoContent();
-        }
-
-        // DELETE: api/Documents/
-        [HttpDelete]
-        public async Task<IActionResult> DeleteRangeDocument(List<Guid> ids) 
-        {
-            List<Guid> NoneDeleteGuid = new List<Guid>();
-            int i = 0;
-            try
-            {
-                for (; i < ids.Count; i++)
-                {
-                    await repository.DeleteAsync(ids[i]);
-                }
-            }
-            catch (Exception)
-            {
-                NoneDeleteGuid.Add(ids[i]);
-            }
-            
-            if (NoneDeleteGuid.Count != 0)
-            {
-                return NotFound(NoneDeleteGuid);
-            }
-            return NoContent();
+            return StatusCode(204);
         }
     }
 }

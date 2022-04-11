@@ -23,9 +23,16 @@ namespace DocumentManager.API.Controllers
         }
 
         [HttpGet("{idDoc}")]
-        public async Task<Document> GetVideosDocument(Guid idDoc)
+        public async Task<ActionResult<Document>> GetVideosDocument(Guid idDoc)
         {
-            return await repository.GetByIdVideosAsync(idDoc);
+            try
+            {
+                return await repository.GetByIdVideosAsync(idDoc);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(404 ,ex.Message);
+            }
         }
 
         [HttpPost("{idDoc:Guid}/{idVideo:Guid}")]
@@ -34,12 +41,12 @@ namespace DocumentManager.API.Controllers
             var document = await repository.GetByIdVideosAsync(idDoc);
             if (document == null)
             {
-                return BadRequest();
+                return StatusCode(400);
             }
             VideoLink videoLink = new VideoLink(idVideo);
             document.Videos.Add(videoLink);
             await repository.UpdateAsync(document);
-            return CreatedAtAction("PostPictureDocument", new { id = videoLink.Id }, videoLink);
+            return StatusCode(201);
         }
 
         [HttpDelete("{idDoc}/{idVideoLink}")]
@@ -49,7 +56,7 @@ namespace DocumentManager.API.Controllers
             var delVideo = document.Videos.Where(f => f.Id == idVideoLink).FirstOrDefault();
             document.Videos.Remove(delVideo);
             await repository.UpdateAsync(document);
-            return NoContent();
+            return StatusCode(204);
         }
     }
 }
