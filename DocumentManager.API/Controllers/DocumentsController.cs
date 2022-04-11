@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using DocumentManager.Domain;
 using DocumentManager.Infrastructure;
 using DocumentManager.Infrastructure.InterfaceRepository;
+using DocumentManager.API.ErrorResponses;
 
 namespace DocumentManager.API.Controllers
 {
@@ -34,7 +35,8 @@ namespace DocumentManager.API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(404, ex.Message);
+                var errorResponse = new ErrorResponse(ex.Message);
+                return StatusCode(404, errorResponse);
             }
         }
 
@@ -42,10 +44,12 @@ namespace DocumentManager.API.Controllers
         [HttpGet("{id:Guid}")]
         public async Task<ActionResult<Document>> GetDocument(Guid id)
         {
+            throw new Exception("ggg");
             var document = await repository.GetByIdAsync(id);
             if (document == null)
             {
-                return StatusCode(404, $"Not found {id}");
+                var errorResponse = new ErrorResponse($"Not found {id}");
+                return StatusCode(404, errorResponse);
             }
             return document;
         }
@@ -57,7 +61,8 @@ namespace DocumentManager.API.Controllers
         {
             if (id != document.Id)
             {
-                return StatusCode(400);
+                var errorResponse = new ErrorResponse("Bad request: no match between id and object");
+                return StatusCode(400, errorResponse);
             }
             try
             {
@@ -65,7 +70,8 @@ namespace DocumentManager.API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                var errorResponse = new ErrorResponse(ex.Message);
+                return StatusCode(500, errorResponse);
             }
             return StatusCode(204, document);
         }
@@ -81,7 +87,8 @@ namespace DocumentManager.API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, ex.Message);
+                var errorResponse = new ErrorResponse(ex.Message);
+                return StatusCode(500, errorResponse);
             }
             return StatusCode(201, document);
         }
@@ -96,7 +103,8 @@ namespace DocumentManager.API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(404, ex.Message);
+                var errorResponse = new ErrorResponse(ex.Message);
+                return StatusCode(404, errorResponse);
             }
             return StatusCode(204);
         }
