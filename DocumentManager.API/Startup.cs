@@ -14,6 +14,9 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using DocumentManager.Domain;
 using DocumentManager.Infrastructure;
+using System.Text.Json.Serialization;
+using System.Text.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace DocumentManager.API
 {
@@ -29,10 +32,10 @@ namespace DocumentManager.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers().AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                options.SerializerSettings.ContractResolver = new DefaultContractResolver();
             });
             services.AddDbContext<DocManagerContext>(b =>
             {

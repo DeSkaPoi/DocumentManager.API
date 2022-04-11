@@ -7,10 +7,10 @@ namespace DocumentManager.API.ErrorResponses
 {
     public class ErrorResponse
     {
-        public string ErrorMesage { get; set; }
-        public ErrorResponse(string errorMesage)
+        public string ErrorMessage { get; }
+        public ErrorResponse(string errorMessage)
         {
-            ErrorMesage = errorMesage;
+            ErrorMessage = errorMessage;
         }
     }
 }
