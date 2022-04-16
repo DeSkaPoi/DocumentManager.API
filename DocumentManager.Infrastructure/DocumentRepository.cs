@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using DocumentManager.Domain;
 using DocumentManager.Infrastructure.InterfaceRepository;
 
+
 namespace DocumentManager.Infrastructure
 {
     public class DocumentRepository : IDocumentRepository, IDocumentDependentEntities

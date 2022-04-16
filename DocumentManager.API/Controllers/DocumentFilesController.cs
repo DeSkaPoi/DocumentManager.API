@@ -17,9 +17,9 @@ namespace DocumentManager.API.Controllers
     {
         private readonly IDocumentDependentEntities repository;
 
-        public DocumentFilesController(DocManagerContext context)
+        public DocumentFilesController(IDocumentDependentEntities repository)
         {
-            repository = new DocumentRepository(context);
+            this.repository = repository;
         }
 
         [HttpGet("{idDoc}")]

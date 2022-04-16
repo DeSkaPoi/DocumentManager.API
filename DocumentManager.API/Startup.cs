@@ -17,6 +17,7 @@ using DocumentManager.Infrastructure;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using Newtonsoft.Json.Serialization;
+using DocumentManager.Infrastructure.InterfaceRepository;
 
 namespace DocumentManager.API
 {
@@ -37,10 +38,12 @@ namespace DocumentManager.API
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
             });
+            services.AddScoped<IDocumentDependentEntities, DocumentRepository>();
+            services.AddScoped<IDocumentRepository, DocumentRepository>();
             services.AddDbContext<DocManagerContext>(b =>
             {
                 b.UseSqlServer(Configuration.GetConnectionString("DocManagerDb"));
-            });
+            },ServiceLifetime.Scoped);
             services.AddCors(options =>
             {
                 options.AddPolicy("default", policy =>

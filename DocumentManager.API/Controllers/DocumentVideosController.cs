@@ -17,9 +17,9 @@ namespace DocumentManager.API.Controllers
     {
         private readonly IDocumentDependentEntities repository;
 
-        public DocumentVideosController(DocManagerContext context)
+        public DocumentVideosController(IDocumentDependentEntities repository)
         {
-            repository = new DocumentRepository(context);
+            this.repository = repository;
         }
 
         [HttpGet("{idDoc}")]
