@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DocumentManager.Domain
 {
@@ -12,9 +8,9 @@ namespace DocumentManager.Domain
         public Guid FileId { get; set; }
         public Document Document { get; set; }
 
-        public FileLink(Guid FileId)
+        public FileLink(Guid fileId)
         {
-            this.FileId = FileId;
+            FileId = fileId;
         }
     }
 }

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DocumentManager.Domain
 {
@@ -11,9 +7,9 @@ namespace DocumentManager.Domain
         public Guid Id { get; set; }
         public Guid PictureId { get; set; }
         public Document Document { get; set; }
-        public PictureLink(Guid PictureId)
+        public PictureLink(Guid pictureId)
         {
-            this.PictureId = PictureId;
+            PictureId = pictureId;
         }
     }
 }

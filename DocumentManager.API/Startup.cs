@@ -1,23 +1,12 @@
+using DocumentManager.Infrastructure;
+using DocumentManager.Infrastructure.InterfaceRepository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using DocumentManager.Domain;
-using DocumentManager.Infrastructure;
-using System.Text.Json.Serialization;
-using System.Text.Json;
 using Newtonsoft.Json.Serialization;
-using DocumentManager.Infrastructure.InterfaceRepository;
 
 namespace DocumentManager.API
 {
@@ -43,7 +32,7 @@ namespace DocumentManager.API
             services.AddDbContext<DocManagerContext>(b =>
             {
                 b.UseSqlServer(Configuration.GetConnectionString("DocManagerDb"));
-            },ServiceLifetime.Scoped);
+            });
             services.AddCors(options =>
             {
                 options.AddPolicy("default", policy =>

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DocumentManager.Domain;
 using Microsoft.EntityFrameworkCore;
-using DocumentManager.Domain;
+using System;
 
 namespace DocumentManager.Infrastructure
 {
@@ -14,10 +10,10 @@ namespace DocumentManager.Infrastructure
         public DbSet<FileLink> Files { get; set; }
         public DbSet<PictureLink> Pictures { get; set; }
         public DbSet<VideoLink> Videos { get; set; }
-        
+
         public DocManagerContext(DbContextOptions options) : base(options)
         {
-            
+
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -31,13 +27,13 @@ namespace DocumentManager.Infrastructure
             {
                 document.HasKey(prop => prop.Id);
 
-                document.HasMany(PropNavNav => PropNavNav.Files).WithOne(PropNav => PropNav.Document)
+                document.HasMany(propNav => propNav.Files).WithOne(propNavigate => propNavigate.Document)
                     .OnDelete(DeleteBehavior.Cascade).IsRequired();
 
-                document.HasMany(PropNavNav => PropNavNav.Pictures).WithOne(PropNav => PropNav.Document)
+                document.HasMany(propNav => propNav.Pictures).WithOne(propNavigate => propNavigate.Document)
                     .OnDelete(DeleteBehavior.Cascade).IsRequired();
 
-                document.HasMany(PropNavNav => PropNavNav.Videos).WithOne(PropNav => PropNav.Document)
+                document.HasMany(propNav => propNav.Videos).WithOne(propNavigate => propNavigate.Document)
                     .OnDelete(DeleteBehavior.Cascade).IsRequired();
 
                 document.Property(prop => prop.Title).HasDefaultValue("not indicated");
@@ -49,22 +45,21 @@ namespace DocumentManager.Infrastructure
             {
                 document.HasKey(prop => prop.Id);
                 document.Property<Guid>("DocumentId");
-                document.HasOne(PropNav => PropNav.Document).WithMany(PropNav => PropNav.Files).HasForeignKey("DocumentId");
+                document.HasOne(propNav => propNav.Document).WithMany(propNavigate => propNavigate.Files).HasForeignKey("DocumentId");
             });
 
             modelBuilder.Entity<PictureLink>(document =>
             {
                 document.HasKey(prop => prop.Id);
                 document.Property<Guid>("DocumentId");
-                document.HasOne(PropNav => PropNav.Document).WithMany(PropNav => PropNav.Pictures).HasForeignKey("DocumentId");
+                document.HasOne(propNav => propNav.Document).WithMany(propNavigate => propNavigate.Pictures).HasForeignKey("DocumentId");
             });
 
             modelBuilder.Entity<VideoLink>(document =>
             {
                 document.HasKey(prop => prop.Id);
                 document.Property<Guid>("DocumentId");
-                document.HasOne(PropNav => PropNav.Document).WithMany(PropNav => PropNav.Videos).HasForeignKey("DocumentId");
-                
+                document.HasOne(propNav => propNav.Document).WithMany(propNavigate => propNavigate.Videos).HasForeignKey("DocumentId");
             });
         }
     }

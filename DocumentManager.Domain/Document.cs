@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DocumentManager.Domain
 {
@@ -10,14 +7,14 @@ namespace DocumentManager.Domain
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
-        public string Content { get; set; } 
+        public string Content { get; set; }
         public string Description { get; set; }
         public DateTime CreationTime { get; set; }
         public DateTime LastUpdate { get; set; }
 
-        public List<FileLink> Files { get; set; } 
-        public List<PictureLink> Pictures { get; set; } 
-        public List<VideoLink> Videos { get; set; } 
+        public List<FileLink> Files { get; set; }
+        public List<PictureLink> Pictures { get; set; }
+        public List<VideoLink> Videos { get; set; }
 
         public Document()
         {

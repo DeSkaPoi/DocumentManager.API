@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DocumentManager.Domain
 {
@@ -12,9 +8,9 @@ namespace DocumentManager.Domain
         //public string ServiceUrl { get; set; }
         public Guid VideoId { get; set; }
         public Document Document { get; set; }
-        public VideoLink(Guid VideoId)
+        public VideoLink(Guid videoId)
         {
-            this.VideoId = VideoId;
+            VideoId = videoId;
         }
     }
 }

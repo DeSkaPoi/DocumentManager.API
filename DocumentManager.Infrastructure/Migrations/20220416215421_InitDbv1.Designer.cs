@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DocumentManager.Infrastructure.Migrations
 {
     [DbContext(typeof(DocManagerContext))]
-    [Migration("20220415193337_InitDbV1")]
-    partial class InitDbV1
+    [Migration("20220416215421_InitDbv1")]
+    partial class InitDbv1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using DocumentManager.API.ErrorResponses;
 using DocumentManager.Domain;
-using DocumentManager.Infrastructure;
 using DocumentManager.Infrastructure.InterfaceRepository;
-using DocumentManager.API.ErrorResponses;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DocumentManager.API.Controllers
 {
@@ -16,22 +12,22 @@ namespace DocumentManager.API.Controllers
     [ApiController]
     public class DocumentsController : ControllerBase
     {
-        private readonly IDocumentRepository repository;
+        private readonly IDocumentRepository _repository;
 
         public DocumentsController(IDocumentRepository repository)
         {
-            this.repository = repository;
+            this._repository = repository;
         }
 
         // GET: api/Documents
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<Document>>> GetDocuments() 
+        public async Task<ActionResult<IReadOnlyList<Document>>> GetDocuments()
         {
             try
             {
-                var documents = await repository.GetAllAsync();
+                var documents = await _repository.GetAllAsync();
                 var action = new ActionResult<IReadOnlyList<Document>>(documents);
-                return action; 
+                return action;
             }
             catch (Exception ex)
             {
@@ -44,7 +40,7 @@ namespace DocumentManager.API.Controllers
         [HttpGet("{id:Guid}")]
         public async Task<ActionResult<Document>> GetDocument(Guid id)
         {
-            Document document = await repository.GetByIdAsync(id);
+            Document document = await _repository.GetByIdAsync(id);
             if (document == null)
             {
                 var errorResponse = new ErrorResponse($"Not found {id}");
@@ -65,7 +61,7 @@ namespace DocumentManager.API.Controllers
             }
             try
             {
-                await repository.UpdateAsync(document);
+                await _repository.UpdateAsync(document);
             }
             catch (Exception ex)
             {
@@ -82,7 +78,7 @@ namespace DocumentManager.API.Controllers
         {
             try
             {
-                await repository.AddAsync(document);
+                await _repository.AddAsync(document);
             }
             catch (Exception ex)
             {
@@ -96,9 +92,9 @@ namespace DocumentManager.API.Controllers
         [HttpDelete("{id:Guid}")]
         public async Task<IActionResult> DeleteDocument(Guid id)
         {
-            try 
+            try
             {
-                await repository.DeleteAsync(id); 
+                await _repository.DeleteAsync(id);
             }
             catch (Exception ex)
             {

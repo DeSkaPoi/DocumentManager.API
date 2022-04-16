@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using DocumentManager.Domain;
+using DocumentManager.Infrastructure.InterfaceRepository;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using DocumentManager.Domain;
-using DocumentManager.Infrastructure;
-using DocumentManager.Infrastructure.InterfaceRepository;
 
 namespace DocumentManager.API.Controllers
 {
@@ -15,11 +11,11 @@ namespace DocumentManager.API.Controllers
     [ApiController]
     public class DocumentFilesController : ControllerBase
     {
-        private readonly IDocumentDependentEntities repository;
+        private readonly IDocumentDependentEntities _repository;
 
         public DocumentFilesController(IDocumentDependentEntities repository)
         {
-            this.repository = repository;
+            this._repository = repository;
         }
 
         [HttpGet("{idDoc}")]
@@ -27,7 +23,7 @@ namespace DocumentManager.API.Controllers
         {
             try
             {
-                return await repository.GetByIdFilesAsync(idDoc);
+                return await _repository.GetByIdFilesAsync(idDoc);
             }
             catch (Exception ex)
             {
@@ -38,24 +34,24 @@ namespace DocumentManager.API.Controllers
         [HttpPost("{idDoc:Guid}/{idFile:Guid}")]
         public async Task<ActionResult<Document>> PostFileDocument(Guid idDoc, Guid idFile)
         {
-            var document = await repository.GetByIdFilesAsync(idDoc);
+            var document = await _repository.GetByIdFilesAsync(idDoc);
             if (document == null)
             {
                 return StatusCode(400);
             }
             FileLink fileLink = new FileLink(idFile);
             document.Files.Add(fileLink);
-            await repository.UpdateAsync(document);
+            await _repository.UpdateAsync(document);
             return StatusCode(201);
         }
 
         [HttpDelete("{idDoc}/{idFileLink}")]
         public async Task<IActionResult> DeleteFileDocument(Guid idDoc, Guid idFileLink)
         {
-            var document = await repository.GetByIdFilesAsync(idDoc);
-            var delFile = document.Files.Where(f => f.Id == idFileLink).FirstOrDefault();
+            var document = await _repository.GetByIdFilesAsync(idDoc);
+            var delFile = document.Files.FirstOrDefault(f => f.Id == idFileLink);
             document.Files.Remove(delFile);
-            await repository.UpdateAsync(document);
+            await _repository.UpdateAsync(document);
             return StatusCode(204);
         }
     }
