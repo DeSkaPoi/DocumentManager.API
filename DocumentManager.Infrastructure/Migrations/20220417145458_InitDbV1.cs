@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DocumentManager.Infrastructure.Migrations
 {
-    public partial class InitDbv1 : Migration
+    public partial class InitDbV1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -24,7 +24,7 @@ namespace DocumentManager.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Files",
+                name: "FileLink",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -33,9 +33,9 @@ namespace DocumentManager.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Files", x => x.Id);
+                    table.PrimaryKey("PK_FileLink", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Files_Documents_DocumentId",
+                        name: "FK_FileLink_Documents_DocumentId",
                         column: x => x.DocumentId,
                         principalTable: "Documents",
                         principalColumn: "Id",
@@ -43,7 +43,7 @@ namespace DocumentManager.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Pictures",
+                name: "PictureLink",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -52,9 +52,9 @@ namespace DocumentManager.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Pictures", x => x.Id);
+                    table.PrimaryKey("PK_PictureLink", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Pictures_Documents_DocumentId",
+                        name: "FK_PictureLink_Documents_DocumentId",
                         column: x => x.DocumentId,
                         principalTable: "Documents",
                         principalColumn: "Id",
@@ -62,7 +62,7 @@ namespace DocumentManager.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Videos",
+                name: "VideoLink",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -71,9 +71,9 @@ namespace DocumentManager.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Videos", x => x.Id);
+                    table.PrimaryKey("PK_VideoLink", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Videos_Documents_DocumentId",
+                        name: "FK_VideoLink_Documents_DocumentId",
                         column: x => x.DocumentId,
                         principalTable: "Documents",
                         principalColumn: "Id",
@@ -81,31 +81,31 @@ namespace DocumentManager.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Files_DocumentId",
-                table: "Files",
+                name: "IX_FileLink_DocumentId",
+                table: "FileLink",
                 column: "DocumentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pictures_DocumentId",
-                table: "Pictures",
+                name: "IX_PictureLink_DocumentId",
+                table: "PictureLink",
                 column: "DocumentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Videos_DocumentId",
-                table: "Videos",
+                name: "IX_VideoLink_DocumentId",
+                table: "VideoLink",
                 column: "DocumentId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Files");
+                name: "FileLink");
 
             migrationBuilder.DropTable(
-                name: "Pictures");
+                name: "PictureLink");
 
             migrationBuilder.DropTable(
-                name: "Videos");
+                name: "VideoLink");
 
             migrationBuilder.DropTable(
                 name: "Documents");

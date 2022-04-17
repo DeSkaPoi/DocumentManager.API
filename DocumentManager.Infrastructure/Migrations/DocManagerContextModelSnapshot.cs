@@ -67,7 +67,7 @@ namespace DocumentManager.Infrastructure.Migrations
 
                     b.HasIndex("DocumentId");
 
-                    b.ToTable("Files");
+                    b.ToTable("FileLink");
                 });
 
             modelBuilder.Entity("DocumentManager.Domain.PictureLink", b =>
@@ -86,7 +86,7 @@ namespace DocumentManager.Infrastructure.Migrations
 
                     b.HasIndex("DocumentId");
 
-                    b.ToTable("Pictures");
+                    b.ToTable("PictureLink");
                 });
 
             modelBuilder.Entity("DocumentManager.Domain.VideoLink", b =>
@@ -105,7 +105,7 @@ namespace DocumentManager.Infrastructure.Migrations
 
                     b.HasIndex("DocumentId");
 
-                    b.ToTable("Videos");
+                    b.ToTable("VideoLink");
                 });
 
             modelBuilder.Entity("DocumentManager.Domain.FileLink", b =>

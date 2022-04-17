@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DocumentManager.Infrastructure.Migrations
 {
     [DbContext(typeof(DocManagerContext))]
-    [Migration("20220416215421_InitDbv1")]
-    partial class InitDbv1
+    [Migration("20220417145458_InitDbV1")]
+    partial class InitDbV1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -69,7 +69,7 @@ namespace DocumentManager.Infrastructure.Migrations
 
                     b.HasIndex("DocumentId");
 
-                    b.ToTable("Files");
+                    b.ToTable("FileLink");
                 });
 
             modelBuilder.Entity("DocumentManager.Domain.PictureLink", b =>
@@ -88,7 +88,7 @@ namespace DocumentManager.Infrastructure.Migrations
 
                     b.HasIndex("DocumentId");
 
-                    b.ToTable("Pictures");
+                    b.ToTable("PictureLink");
                 });
 
             modelBuilder.Entity("DocumentManager.Domain.VideoLink", b =>
@@ -107,7 +107,7 @@ namespace DocumentManager.Infrastructure.Migrations
 
                     b.HasIndex("DocumentId");
 
-                    b.ToTable("Videos");
+                    b.ToTable("VideoLink");
                 });
 
             modelBuilder.Entity("DocumentManager.Domain.FileLink", b =>
