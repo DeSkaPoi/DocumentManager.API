@@ -7,18 +7,13 @@ namespace DocumentManager.Infrastructure
     public class DocManagerContext : DbContext
     {
         public DbSet<Document> Documents { get; set; }
-        public DbSet<FileLink> Files { get; set; }
-        public DbSet<PictureLink> Pictures { get; set; }
-        public DbSet<VideoLink> Videos { get; set; }
 
         public DocManagerContext(DbContextOptions options) : base(options)
         {
-
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=DocManagerDb;Trusted_Connection=True;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
