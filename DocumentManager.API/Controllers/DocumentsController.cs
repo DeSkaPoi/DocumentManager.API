@@ -16,7 +16,7 @@ namespace DocumentManager.API.Controllers
 
         public DocumentsController(IDocumentRepository repository)
         {
-            this._repository = repository;
+            _repository = repository;
         }
 
         // GET: api/Documents
@@ -40,7 +40,7 @@ namespace DocumentManager.API.Controllers
         [HttpGet("{id:Guid}")]
         public async Task<ActionResult<Document>> GetDocument(Guid id)
         {
-            Document document = await _repository.GetByIdAsync(id);
+            var document = await _repository.GetByIdAsync(id);
             if (document == null)
             {
                 var errorResponse = new ErrorResponse($"Not found {id}");
@@ -62,13 +62,13 @@ namespace DocumentManager.API.Controllers
             try
             {
                 await _repository.UpdateAsync(document);
+                return StatusCode(204);
             }
             catch (Exception ex)
             {
                 var errorResponse = new ErrorResponse(ex.Message);
                 return StatusCode(500, errorResponse);
             }
-            return StatusCode(204);
         }
 
         // POST: api/Documents
@@ -79,13 +79,13 @@ namespace DocumentManager.API.Controllers
             try
             {
                 await _repository.AddAsync(document);
+                return StatusCode(201, document);
             }
             catch (Exception ex)
             {
                 var errorResponse = new ErrorResponse(ex.Message);
                 return StatusCode(500, errorResponse);
             }
-            return StatusCode(201, document);
         }
 
         // DELETE: api/Documents/5
@@ -95,13 +95,13 @@ namespace DocumentManager.API.Controllers
             try
             {
                 await _repository.DeleteAsync(id);
+                return StatusCode(204);
             }
             catch (Exception ex)
             {
                 var errorResponse = new ErrorResponse(ex.Message);
                 return StatusCode(404, errorResponse);
             }
-            return StatusCode(204);
         }
     }
 }

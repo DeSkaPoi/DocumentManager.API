@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using DocumentManager.API.ErrorResponses;
 
 namespace DocumentManager.API.Controllers
 {
@@ -39,20 +40,42 @@ namespace DocumentManager.API.Controllers
             {
                 return StatusCode(400);
             }
-            FileLink fileLink = new FileLink(idFile);
-            document.Files.Add(fileLink);
-            await _repository.UpdateAsync(document);
-            return StatusCode(201);
+
+            try
+            {
+                var fileLink = new FileLink(idFile);
+                document.Files.Add(fileLink);
+                await _repository.UpdateAsync(document);
+                return StatusCode(201);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = new ErrorResponse(ex.Message);
+                return StatusCode(404, errorResponse);
+            }
         }
 
         [HttpDelete("{idDoc}/{idFileLink}")]
         public async Task<IActionResult> DeleteFileDocument(Guid idDoc, Guid idFileLink)
         {
             var document = await _repository.GetByIdFilesAsync(idDoc);
-            var delFile = document.Files.FirstOrDefault(f => f.Id == idFileLink);
-            document.Files.Remove(delFile);
-            await _repository.UpdateAsync(document);
-            return StatusCode(204);
+            if (document == null)
+            {
+                return StatusCode(400);
+            }
+
+            try
+            {
+                var delFile = document.Files.FirstOrDefault(f => f.Id == idFileLink);
+                document.Files.Remove(delFile);
+                await _repository.UpdateAsync(document);
+                return StatusCode(204);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = new ErrorResponse(ex.Message);
+                return StatusCode(404, errorResponse);
+            }
         }
     }
 }

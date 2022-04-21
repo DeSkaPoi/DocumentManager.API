@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using DocumentManager.API.ErrorResponses;
 
 namespace DocumentManager.API.Controllers
 {
@@ -39,20 +40,42 @@ namespace DocumentManager.API.Controllers
             {
                 return StatusCode(400);
             }
-            VideoLink videoLink = new VideoLink(idVideo);
-            document.Videos.Add(videoLink);
-            await _repository.UpdateAsync(document);
-            return StatusCode(201);
+
+            try
+            {
+                var videoLink = new VideoLink(idVideo);
+                document.Videos.Add(videoLink);
+                await _repository.UpdateAsync(document);
+                return StatusCode(201);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = new ErrorResponse(ex.Message);
+                return StatusCode(500, errorResponse);
+            }
         }
 
         [HttpDelete("{idDoc}/{idVideoLink}")]
         public async Task<IActionResult> DeleteVideoDocument(Guid idDoc, Guid idVideoLink)
         {
             var document = await _repository.GetByIdVideosAsync(idDoc);
-            var delVideo = document.Videos.Where(f => f.Id == idVideoLink).FirstOrDefault();
-            document.Videos.Remove(delVideo);
-            await _repository.UpdateAsync(document);
-            return StatusCode(204);
+            if (document == null)
+            {
+                return StatusCode(400);
+            }
+
+            try
+            {
+                var delVideo = document.Videos.FirstOrDefault(f => f.Id == idVideoLink);
+                document.Videos.Remove(delVideo);
+                await _repository.UpdateAsync(document);
+                return StatusCode(204);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = new ErrorResponse(ex.Message);
+                return StatusCode(500, errorResponse);
+            }
         }
     }
 }

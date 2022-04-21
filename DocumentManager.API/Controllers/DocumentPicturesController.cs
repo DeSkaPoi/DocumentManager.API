@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using DocumentManager.API.ErrorResponses;
 
 namespace DocumentManager.API.Controllers
 {
@@ -39,20 +40,42 @@ namespace DocumentManager.API.Controllers
             {
                 return StatusCode(400);
             }
-            PictureLink pictureLink = new PictureLink(idPicture);
-            document.Pictures.Add(pictureLink);
-            await _repository.UpdateAsync(document);
-            return StatusCode(201);
+
+            try
+            {
+                var pictureLink = new PictureLink(idPicture);
+                document.Pictures.Add(pictureLink);
+                await _repository.UpdateAsync(document);
+                return StatusCode(201);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = new ErrorResponse(ex.Message);
+                return StatusCode(500, errorResponse);
+            }
         }
 
         [HttpDelete("{idDoc}/{idPictureLink}")]
         public async Task<IActionResult> DeletePictureDocument(Guid idDoc, Guid idPictureLink)
         {
             var document = await _repository.GetByIdPicturesAsync(idDoc);
-            var delPicture = document.Pictures.FirstOrDefault(f => f.Id == idPictureLink);
-            document.Pictures.Remove(delPicture);
-            await _repository.UpdateAsync(document);
-            return StatusCode(204);
+            if (document == null)
+            {
+                return StatusCode(400);
+            }
+
+            try
+            {
+                var delPicture = document.Pictures.FirstOrDefault(f => f.Id == idPictureLink);
+                document.Pictures.Remove(delPicture);
+                await _repository.UpdateAsync(document);
+                return StatusCode(204);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = new ErrorResponse(ex.Message);
+                return StatusCode(500, errorResponse);
+            }
         }
     }
 }
