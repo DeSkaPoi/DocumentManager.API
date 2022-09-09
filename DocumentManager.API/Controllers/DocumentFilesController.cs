@@ -66,7 +66,7 @@ namespace DocumentManager.API.Controllers
 
             try
             {
-                var delFile = document.Files.FirstOrDefault(f => f.Id == idFileLink);
+                var delFile = document.Files.FirstOrDefault(f => f.FileId == idFileLink);
                 document.Files.Remove(delFile);
                 await _repository.UpdateAsync(document);
                 return StatusCode(204);
