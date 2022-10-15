@@ -66,7 +66,7 @@ namespace DocumentManager.API.Controllers
 
             try
             {
-                var delPicture = document.Pictures.FirstOrDefault(f => f.Id == idPictureLink);
+                var delPicture = document.Pictures.FirstOrDefault(f => f.PictureId == idPictureLink);
                 document.Pictures.Remove(delPicture);
                 await _repository.UpdateAsync(document);
                 return StatusCode(204);
