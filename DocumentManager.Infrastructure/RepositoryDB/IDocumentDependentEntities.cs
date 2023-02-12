@@ -1,15 +1,14 @@
-﻿using DocumentManager.Domain;
-using DocumentManager.Infrastructure.ModelDB;
+﻿using DocumentManager.Infrastructure.ModelDB;
 using System;
 using System.Threading.Tasks;
 
 namespace DocumentManager.Infrastructure.RepositoryDB
 {
-    public interface IDocumentDependentEntities
+    public interface IDocumentDependentEntitiesAsync
     {
-        public Task UpdateAsync(DocumentDataBase document);
-        public Task<DocumentDataBase> GetByIdFilesAsync(Guid idDoc);
-        public Task<DocumentDataBase> GetByIdPicturesAsync(Guid idDoc);
-        public Task<DocumentDataBase> GetByIdVideosAsync(Guid idDoc);
+        public Task Update(DocumentDataBase document);
+        public Task<DocumentDataBase> GetByIdFiles(Guid idDoc);
+        public Task<DocumentDataBase> GetByIdPictures(Guid idDoc);
+        public Task<DocumentDataBase> GetByIdVideos(Guid idDoc);
     }
 }

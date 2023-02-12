@@ -1,14 +1,14 @@
 ﻿using System;
 
-namespace DocumentManager.Domain.Model
+namespace DocumentManager.API.ModelResponse
 {
-    public class PictureLink
+    public class PictureLinkResponse
     {
         public Guid Id { get; set; }
         public Guid PictureId { get; set; }
-        public Document Document { get; set; }
-        public PictureLink(Guid pictureId)
+        public PictureLinkResponse(Guid id, Guid pictureId)
         {
+            Id = id;
             PictureId = pictureId;
         }
     }

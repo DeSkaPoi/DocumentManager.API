@@ -35,6 +35,5 @@ namespace DocumentManager.Domain.Converters
         {
             return new VideoLinkDataBase(video.Id, video.VideoId);
         }
-
     }
 }

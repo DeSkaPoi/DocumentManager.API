@@ -1,10 +1,9 @@
-﻿using DocumentManager.Domain.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace DocumentManager.API.ModelResponse
 {
-    public class Document
+    public class DocumentResponse
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
@@ -13,15 +12,15 @@ namespace DocumentManager.API.ModelResponse
         public DateTime CreationTime { get; set; }
         public DateTime LastUpdate { get; set; }
 
-        public List<FileLink> Files { get; set; }
-        public List<PictureLink> Pictures { get; set; }
-        public List<VideoLink> Videos { get; set; }
+        public List<FileLinkResponse> Files { get; set; }
+        public List<PictureLinkResponse> Pictures { get; set; }
+        public List<VideoLinkResponse> Videos { get; set; }
 
-        public Document()
+        public DocumentResponse()
         {
-            Files = new List<FileLink>();
-            Pictures = new List<PictureLink>();
-            Videos = new List<VideoLink>();
+            Files = new List<FileLinkResponse>();
+            Pictures = new List<PictureLinkResponse>();
+            Videos = new List<VideoLinkResponse>();
         }
 
     }

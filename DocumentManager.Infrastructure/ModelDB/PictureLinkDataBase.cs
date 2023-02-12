@@ -7,8 +7,11 @@ namespace DocumentManager.Infrastructure.ModelDB
         public Guid Id { get; set; }
         public Guid PictureId { get; set; }
         public DocumentDataBase Document { get; set; }
-        public PictureLinkDataBase(Guid pictureId)
+
+        public PictureLinkDataBase() { }
+        public PictureLinkDataBase(Guid id, Guid pictureId)
         {
+            Id = id;
             PictureId = pictureId;
         }
     }

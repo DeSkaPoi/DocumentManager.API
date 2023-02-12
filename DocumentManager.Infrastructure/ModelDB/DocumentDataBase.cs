@@ -36,6 +36,5 @@ namespace DocumentManager.Infrastructure.ModelDB
             Pictures = pictureLinkDataBases;
             Videos = videoLinkDataBases;
         }
-
     }
 }

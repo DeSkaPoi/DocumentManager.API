@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DocumentManager.Infrastructure.RepositoryDB
 {
-    public class DocumentRepositoryAsync : IDocumentRepository, IDocumentDependentEntities
+    public class DocumentRepositoryAsync : IDocumentRepositoryAsync, IDocumentDependentEntitiesAsync
     {
         private readonly DocManagerContext _context;
         public DocumentRepositoryAsync(DocManagerContext context)

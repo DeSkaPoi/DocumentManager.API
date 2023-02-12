@@ -8,8 +8,10 @@ namespace DocumentManager.Infrastructure.ModelDB
         public Guid FileId { get; set; }
         public DocumentDataBase Document { get; set; }
 
-        public FileLinkDataBase(Guid fileId)
+        public FileLinkDataBase() { }
+        public FileLinkDataBase(Guid id, Guid fileId)
         {
+            Id = id;
             FileId = fileId;
         }
     }

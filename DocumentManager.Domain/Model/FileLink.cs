@@ -4,12 +4,12 @@ namespace DocumentManager.Domain.Model
 {
     public class FileLink
     {
-        public Guid Id { get; set; }
-        public Guid FileId { get; set; }
-        public Document Document { get; set; }
+        public Guid Id { get; }
+        public Guid FileId { get; }
 
-        public FileLink(Guid fileId)
+        public FileLink(Guid id, Guid fileId)
         {
+            Id = id;
             FileId = fileId;
         }
     }

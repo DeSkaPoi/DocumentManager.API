@@ -1,4 +1,6 @@
-﻿using DocumentManager.Domain.Model;
+﻿using DocumentManager.Domain.Converters;
+using DocumentManager.Domain.Model;
+using DocumentManager.Infrastructure.RepositoryDB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,32 +11,38 @@ namespace DocumentManager.Domain.Services
 {
     public class DocumentService : IDocimentServiceAsync
     {
-        public DocumentService() 
-        { 
-        }
-        public Task Add(Document document)
+        private IDocumentRepositoryAsync _repository;
+        public DocumentService(IDocumentRepositoryAsync documentRepository) 
         {
-            throw new NotImplementedException();
+            _repository = documentRepository;
         }
-
-        public Task Change(Document document)
+        public async Task Add(Document document)
         {
-            throw new NotImplementedException();
+            var docDB = document.Converts();
+            await _repository.Add(docDB);
         }
 
-        public Task Delete(Guid idDoc)
+        public async Task Change(Document document)
         {
-            throw new NotImplementedException();
+            var docDB = document.Converts();
+            await _repository.Update(docDB);
         }
 
-        public Task<IReadOnlyList<Document>> GetAll()
+        public async Task Delete(Guid idDoc)
         {
-            throw new NotImplementedException();
+            await _repository.Delete(idDoc);
         }
 
-        public Task<Document> GetById(Guid idDoc)
+        public async Task<IReadOnlyList<Document>> GetAll()
         {
-            throw new NotImplementedException();
+            var docDBCollection = await _repository.GetAll();
+            return docDBCollection.Converts();
+        }
+
+        public async Task<Document> GetById(Guid idDoc)
+        {
+            var docDB = await _repository.GetById(idDoc);
+            return docDB.Converts();
         }
     }
 }

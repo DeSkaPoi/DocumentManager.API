@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace DocumentManager.Domain.Model
+namespace DocumentManager.API.ModelResponse
 {
-    public class VideoLink
+    public class VideoLinkResponse
     {
         public Guid Id { get; }
         public Guid VideoId { get; }
-        public VideoLink(Guid id, Guid videoId)
+        public VideoLinkResponse(Guid id, Guid videoId)
         {
             Id = id;
             VideoId = videoId;

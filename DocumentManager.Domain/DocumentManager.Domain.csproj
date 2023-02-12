@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Converters\" />
+    <ProjectReference Include="..\DocumentManager.Infrastructure\DocumentManager.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

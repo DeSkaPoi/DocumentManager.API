@@ -4,11 +4,11 @@ namespace DocumentManager.Domain.Model
 {
     public class PictureLink
     {
-        public Guid Id { get; set; }
-        public Guid PictureId { get; set; }
-        public Document Document { get; set; }
-        public PictureLink(Guid pictureId)
+        public Guid Id { get; }
+        public Guid PictureId { get; }
+        public PictureLink(Guid id, Guid pictureId)
         {
+            Id = id;
             PictureId = pictureId;
         }
     }

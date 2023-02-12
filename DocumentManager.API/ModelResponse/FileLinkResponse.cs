@@ -2,13 +2,14 @@
 
 namespace DocumentManager.API.ModelResponse
 {
-    public class FileLink
+    public class FileLinkResponse
     {
         public Guid Id { get; set; }
         public Guid FileId { get; set; }
 
-        public FileLink(Guid fileId)
+        public FileLinkResponse(Guid id, Guid fileId)
         {
+            Id = id;
             FileId = fileId;
         }
     }

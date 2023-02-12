@@ -9,6 +9,7 @@ using DocumentManager.Infrastructure.RepositoryDB;
 using DocumentManager.Domain.Model;
 using DocumentManager.Domain.Services;
 using DocumentManager.API.ModelResponse;
+using DocumentManager.Domain.Converters;
 
 namespace DocumentManager.API.Controllers
 {
@@ -24,11 +25,12 @@ namespace DocumentManager.API.Controllers
         }
 
         [HttpGet("{idDoc}")]
-        public async Task<ActionResult<Document>> GetPicturesDocument(Guid idDoc)
+        public async Task<ActionResult<DocumentResponse>> GetPicturesDocument(Guid idDoc)
         {
             try
             {
-                return await _repository.GetByIdPictures(idDoc);
+                var docFiles = await _repository.GetByIdFiles(idDoc);
+                return docFiles.Converts();
             }
             catch (Exception ex)
             {
@@ -37,7 +39,7 @@ namespace DocumentManager.API.Controllers
         }
 
         [HttpPost("{idDoc:Guid}/{idPicture:Guid}")]
-        public async Task<ActionResult<Document>> PostPictureDocument(Guid idDoc, Guid idPicture)
+        public async Task<ActionResult<DocumentResponse>> PostPictureDocument(Guid idDoc, Guid idPicture)
         {
             var document = await _repository.GetByIdPictures(idDoc);
             if (document == null)

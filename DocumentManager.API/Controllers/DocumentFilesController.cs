@@ -3,12 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using DocumentManager.API.ErrorResponses;
 using DocumentManager.Infrastructure.ModelDB;
 using DocumentManager.Infrastructure.RepositoryDB;
 using DocumentManager.Domain.Model;
 using DocumentManager.Domain.Services;
 using DocumentManager.API.ModelResponse;
+using DocumentManager.Domain.Converters;
 
 namespace DocumentManager.API.Controllers
 {
@@ -24,11 +24,12 @@ namespace DocumentManager.API.Controllers
         }
 
         [HttpGet("{idDoc}")]
-        public async Task<ActionResult<Document>> GetFilesDocument(Guid idDoc)
+        public async Task<ActionResult<DocumentResponse>> GetFilesDocument(Guid idDoc)
         {
             try
             {
-                return await _repository.GetByIdFiles(idDoc);
+                var docFiles = await _repository.GetByIdFiles(idDoc);
+                return docFiles.Converts();
             }
             catch (Exception ex)
             {
@@ -37,7 +38,7 @@ namespace DocumentManager.API.Controllers
         }
 
         [HttpPost("{idDoc:Guid}/{idFile:Guid}")]
-        public async Task<ActionResult<Document>> PostFileDocument(Guid idDoc, Guid idFile)
+        public async Task<ActionResult<DocumentResponse>> PostFileDocument(Guid idDoc, Guid idFile)
         {
             var document = await _repository.GetByIdFiles(idDoc);
             if (document == null)
