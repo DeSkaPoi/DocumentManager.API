@@ -19,11 +19,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DocumentManager.Domain\DocumentManager.Domain.csproj" />
+    <ProjectReference Include="..\DocumentManager.Infrastructure\DocumentManager.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Properties\" />
-    <Folder Include="Converts\" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

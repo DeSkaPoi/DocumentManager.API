@@ -9,6 +9,8 @@ using DocumentManager.Domain.Model;
 using DocumentManager.Domain.Services;
 using DocumentManager.API.ModelResponse;
 using DocumentManager.Domain.Converters;
+using System.Collections.Generic;
+using DocumentManager.API.Converts;
 
 namespace DocumentManager.API.Controllers
 {
@@ -29,7 +31,8 @@ namespace DocumentManager.API.Controllers
             try
             {
                 var docFiles = await _repository.GetByIdFiles(idDoc);
-                return docFiles.Converts();
+                var docResponse = docFiles.ConvertToResponse();
+                return docResponse;
             }
             catch (Exception ex)
             {

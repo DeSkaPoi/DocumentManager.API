@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentManager.Domain.Model;
+using System;
 using System.Collections.Generic;
 
 namespace DocumentManager.API.ModelResponse
@@ -23,5 +24,18 @@ namespace DocumentManager.API.ModelResponse
             Videos = new List<VideoLinkResponse>();
         }
 
+        public DocumentResponse(Guid id, string title, string content, string description, DateTime creationTime, DateTime lastUpdate,
+           List<FileLinkResponse> fileLink, List<PictureLinkResponse> pictureLink, List<VideoLinkResponse> videoLink)
+        {
+            Id = id;
+            Title = title;
+            Content = content;
+            Description = description;
+            CreationTime = creationTime;
+            LastUpdate = lastUpdate;
+            Files = fileLink;
+            Pictures = pictureLink;
+            Videos = videoLink;
+        }
     }
 }

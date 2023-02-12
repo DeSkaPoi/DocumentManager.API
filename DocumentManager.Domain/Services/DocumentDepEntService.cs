@@ -19,7 +19,7 @@ namespace DocumentManager.Domain.Services
 
         public async Task Change(Document document)
         {
-            await _docDepEnt.Update(document.Converts());
+            await _docDepEnt.Update(document.ConvertsToDataBase());
         }
 
         public async Task<Document> GetByIdFiles(Guid idDoc)

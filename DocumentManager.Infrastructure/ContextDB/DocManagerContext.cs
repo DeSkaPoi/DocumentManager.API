@@ -1,5 +1,4 @@
-﻿using DocumentManager.Domain.Model;
-using DocumentManager.Infrastructure.ModelDB;
+﻿using DocumentManager.Infrastructure.ModelDB;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -44,7 +43,7 @@ namespace DocumentManager.Infrastructure.ContextDB
                 document.HasOne(propNav => propNav.Document).WithMany(propNavigate => propNavigate.Files).HasForeignKey("DocumentId");
             });
 
-            modelBuilder.Entity<PictureLink>(document =>
+            modelBuilder.Entity<PictureLinkDataBase>(document =>
             {
                 document.HasKey(prop => prop.Id);
                 document.Property<Guid>("DocumentId");

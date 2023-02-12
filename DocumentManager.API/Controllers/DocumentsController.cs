@@ -1,4 +1,6 @@
-﻿using DocumentManager.API.ModelResponse;
+﻿using DocumentManager.API.Converts;
+using DocumentManager.API.ModelResponse;
+using DocumentManager.Domain.Converters;
 using DocumentManager.Domain.Model;
 using DocumentManager.Domain.Services;
 using DocumentManager.Infrastructure.ModelDB;
@@ -14,9 +16,9 @@ namespace DocumentManager.API.Controllers
     [ApiController]
     public class DocumentsController : ControllerBase
     {
-        private readonly IDocimentServiceAsync _repository;
+        private readonly IDocumentServiceAsync _repository;
 
-        public DocumentsController(IDocimentServiceAsync repository)
+        public DocumentsController(IDocumentServiceAsync repository)
         {
             _repository = repository;
         }
@@ -27,8 +29,9 @@ namespace DocumentManager.API.Controllers
         {
             try
             {
-                var documents = await _repository.GetAll();
-                var action = new ActionResult<IReadOnlyList<DocumentResponse>>(documents);
+                var documentsModel = await _repository.GetAll();
+                var documentsResponse = documentsModel.ConvertToResponse();
+                var action = new ActionResult<IReadOnlyList<DocumentResponse>>(documentsResponse);
                 return action;
             }
             catch (Exception ex)
@@ -48,7 +51,7 @@ namespace DocumentManager.API.Controllers
                 var errorResponse = new ErrorResponse($"Not found {id}");
                 return StatusCode(404, errorResponse);
             }
-            return document;
+            return document.ConvertToResponse();
         }
 
         // PUT: https://localhost:5001/Documents/5
@@ -63,7 +66,8 @@ namespace DocumentManager.API.Controllers
             }
             try
             {
-                await _repository.Change(document);
+                var documentModel = document.ConvertsToModel();
+                await _repository.Change(documentModel);
                 return StatusCode(204);
             }
             catch (Exception ex)
@@ -80,7 +84,8 @@ namespace DocumentManager.API.Controllers
         {
             try
             {
-                await _repository.Add(document);
+                var documentModel = document.ConvertsToModel();
+                await _repository.Add(documentModel);
                 return StatusCode(201, document);
             }
             catch (Exception ex)

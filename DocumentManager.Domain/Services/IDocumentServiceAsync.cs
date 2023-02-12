@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DocumentManager.Domain.Services
 {
-    public interface IDocimentServiceAsync
+    public interface IDocumentServiceAsync
     {
         public Task Add(Document document);
         public Task Change(Document document);

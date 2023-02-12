@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DocumentManager.Domain.Services
 {
-    public class DocumentService : IDocimentServiceAsync
+    public class DocumentService : IDocumentServiceAsync
     {
         private IDocumentRepositoryAsync _repository;
         public DocumentService(IDocumentRepositoryAsync documentRepository) 
@@ -18,13 +18,13 @@ namespace DocumentManager.Domain.Services
         }
         public async Task Add(Document document)
         {
-            var docDB = document.Converts();
+            var docDB = document.ConvertsToDataBase();
             await _repository.Add(docDB);
         }
 
         public async Task Change(Document document)
         {
-            var docDB = document.Converts();
+            var docDB = document.ConvertsToDataBase();
             await _repository.Update(docDB);
         }
 

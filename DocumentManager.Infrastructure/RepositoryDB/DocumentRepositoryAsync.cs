@@ -1,5 +1,4 @@
-﻿using DocumentManager.Domain;
-using DocumentManager.Infrastructure.ContextDB;
+﻿using DocumentManager.Infrastructure.ContextDB;
 using DocumentManager.Infrastructure.ModelDB;
 using Microsoft.EntityFrameworkCore;
 using System;
