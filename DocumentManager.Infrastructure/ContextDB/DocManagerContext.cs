@@ -1,12 +1,13 @@
-﻿using DocumentManager.Domain;
+﻿using DocumentManager.Domain.Model;
+using DocumentManager.Infrastructure.ModelDB;
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace DocumentManager.Infrastructure
+namespace DocumentManager.Infrastructure.ContextDB
 {
     public class DocManagerContext : DbContext
     {
-        public DbSet<Document> Documents { get; set; }
+        public DbSet<DocumentDataBase> Documents { get; set; }
 
         public DocManagerContext(DbContextOptions options) : base(options)
         {
@@ -18,7 +19,7 @@ namespace DocumentManager.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Document>(document =>
+            modelBuilder.Entity<DocumentDataBase>(document =>
             {
                 document.HasKey(prop => prop.Id);
 
@@ -36,7 +37,7 @@ namespace DocumentManager.Infrastructure
                 document.Property(prop => prop.Description).HasDefaultValue("not indicated");
             });
 
-            modelBuilder.Entity<FileLink>(document =>
+            modelBuilder.Entity<FileLinkDataBase>(document =>
             {
                 document.HasKey(prop => prop.Id);
                 document.Property<Guid>("DocumentId");
@@ -50,7 +51,7 @@ namespace DocumentManager.Infrastructure
                 document.HasOne(propNav => propNav.Document).WithMany(propNavigate => propNavigate.Pictures).HasForeignKey("DocumentId");
             });
 
-            modelBuilder.Entity<VideoLink>(document =>
+            modelBuilder.Entity<VideoLinkDataBase>(document =>
             {
                 document.HasKey(prop => prop.Id);
                 document.Property<Guid>("DocumentId");

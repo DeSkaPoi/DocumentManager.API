@@ -1,5 +1,5 @@
-using DocumentManager.Infrastructure;
-using DocumentManager.Infrastructure.InterfaceRepository;
+using DocumentManager.Infrastructure.ContextDB;
+using DocumentManager.Infrastructure.RepositoryDB;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -27,8 +27,8 @@ namespace DocumentManager.API
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 options.SerializerSettings.ContractResolver = new DefaultContractResolver();
             });
-            services.AddScoped<IDocumentDependentEntities, DocumentRepository>();
-            services.AddScoped<IDocumentRepository, DocumentRepository>();
+            services.AddScoped<IDocumentDependentEntities, DocumentRepositoryAsync>();
+            services.AddScoped<IDocumentRepository, DocumentRepositoryAsync>();
             services.AddDbContext<DocManagerContext>(b =>
             {
                 b.UseSqlServer(Configuration.GetConnectionString("DocManagerDb"));

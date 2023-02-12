@@ -1,10 +1,14 @@
 ﻿using DocumentManager.Domain;
-using DocumentManager.Infrastructure.InterfaceRepository;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using DocumentManager.API.ErrorResponses;
+using DocumentManager.Infrastructure.ModelDB;
+using DocumentManager.Infrastructure.RepositoryDB;
+using DocumentManager.Domain.Model;
+using DocumentManager.Domain.Services;
+using DocumentManager.API.ModelResponse;
 
 namespace DocumentManager.API.Controllers
 {
@@ -12,9 +16,9 @@ namespace DocumentManager.API.Controllers
     [ApiController]
     public class DocumentPicturesController : ControllerBase
     {
-        private readonly IDocumentDependentEntities _repository;
+        private readonly IDocumentDepEntAsync _repository;
 
-        public DocumentPicturesController(IDocumentDependentEntities repository)
+        public DocumentPicturesController(IDocumentDepEntAsync repository)
         {
             this._repository = repository;
         }
@@ -24,7 +28,7 @@ namespace DocumentManager.API.Controllers
         {
             try
             {
-                return await _repository.GetByIdPicturesAsync(idDoc);
+                return await _repository.GetByIdPictures(idDoc);
             }
             catch (Exception ex)
             {
@@ -35,7 +39,7 @@ namespace DocumentManager.API.Controllers
         [HttpPost("{idDoc:Guid}/{idPicture:Guid}")]
         public async Task<ActionResult<Document>> PostPictureDocument(Guid idDoc, Guid idPicture)
         {
-            var document = await _repository.GetByIdPicturesAsync(idDoc);
+            var document = await _repository.GetByIdPictures(idDoc);
             if (document == null)
             {
                 return StatusCode(400);
@@ -43,9 +47,9 @@ namespace DocumentManager.API.Controllers
 
             try
             {
-                var pictureLink = new PictureLink(idPicture);
+                var pictureLink = new PictureLink(new Guid(), idPicture);
                 document.Pictures.Add(pictureLink);
-                await _repository.UpdateAsync(document);
+                await _repository.Change(document);
                 return StatusCode(201);
             }
             catch (Exception ex)
@@ -58,7 +62,7 @@ namespace DocumentManager.API.Controllers
         [HttpDelete("{idDoc}/{idPictureLink}")]
         public async Task<IActionResult> DeletePictureDocument(Guid idDoc, Guid idPictureLink)
         {
-            var document = await _repository.GetByIdPicturesAsync(idDoc);
+            var document = await _repository.GetByIdPictures(idDoc);
             if (document == null)
             {
                 return StatusCode(400);
@@ -68,7 +72,7 @@ namespace DocumentManager.API.Controllers
             {
                 var delPicture = document.Pictures.FirstOrDefault(f => f.PictureId == idPictureLink);
                 document.Pictures.Remove(delPicture);
-                await _repository.UpdateAsync(document);
+                await _repository.Change(document);
                 return StatusCode(204);
             }
             catch (Exception ex)

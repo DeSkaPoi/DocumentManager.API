@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DocumentManager.Domain
+namespace DocumentManager.Domain.Model
 {
     public class PictureLink
     {

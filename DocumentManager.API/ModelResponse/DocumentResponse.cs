@@ -1,7 +1,8 @@
-﻿using System;
+﻿using DocumentManager.Domain.Model;
+using System;
 using System.Collections.Generic;
 
-namespace DocumentManager.Domain
+namespace DocumentManager.API.ModelResponse
 {
     public class Document
     {

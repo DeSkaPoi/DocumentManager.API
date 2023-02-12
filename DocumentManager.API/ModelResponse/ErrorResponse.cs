@@ -1,4 +1,4 @@
-﻿namespace DocumentManager.API.ErrorResponses
+﻿namespace DocumentManager.API.ModelResponse
 {
     public class ErrorResponse
     {

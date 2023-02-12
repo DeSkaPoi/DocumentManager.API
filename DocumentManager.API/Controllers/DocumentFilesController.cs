@@ -1,10 +1,14 @@
 ﻿using DocumentManager.Domain;
-using DocumentManager.Infrastructure.InterfaceRepository;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using DocumentManager.API.ErrorResponses;
+using DocumentManager.Infrastructure.ModelDB;
+using DocumentManager.Infrastructure.RepositoryDB;
+using DocumentManager.Domain.Model;
+using DocumentManager.Domain.Services;
+using DocumentManager.API.ModelResponse;
 
 namespace DocumentManager.API.Controllers
 {
@@ -12,9 +16,9 @@ namespace DocumentManager.API.Controllers
     [ApiController]
     public class DocumentFilesController : ControllerBase
     {
-        private readonly IDocumentDependentEntities _repository;
+        private readonly IDocumentDepEntAsync _repository;
 
-        public DocumentFilesController(IDocumentDependentEntities repository)
+        public DocumentFilesController(IDocumentDepEntAsync repository)
         {
             this._repository = repository;
         }
@@ -24,7 +28,7 @@ namespace DocumentManager.API.Controllers
         {
             try
             {
-                return await _repository.GetByIdFilesAsync(idDoc);
+                return await _repository.GetByIdFiles(idDoc);
             }
             catch (Exception ex)
             {
@@ -35,7 +39,7 @@ namespace DocumentManager.API.Controllers
         [HttpPost("{idDoc:Guid}/{idFile:Guid}")]
         public async Task<ActionResult<Document>> PostFileDocument(Guid idDoc, Guid idFile)
         {
-            var document = await _repository.GetByIdFilesAsync(idDoc);
+            var document = await _repository.GetByIdFiles(idDoc);
             if (document == null)
             {
                 return StatusCode(400);
@@ -43,9 +47,9 @@ namespace DocumentManager.API.Controllers
 
             try
             {
-                var fileLink = new FileLink(idFile);
+                var fileLink = new FileLink(new Guid(), idFile);
                 document.Files.Add(fileLink);
-                await _repository.UpdateAsync(document);
+                await _repository.Change(document);
                 return StatusCode(201);
             }
             catch (Exception ex)
@@ -58,7 +62,7 @@ namespace DocumentManager.API.Controllers
         [HttpDelete("{idDoc}/{idFileLink}")]
         public async Task<IActionResult> DeleteFileDocument(Guid idDoc, Guid idFileLink)
         {
-            var document = await _repository.GetByIdFilesAsync(idDoc);
+            var document = await _repository.GetByIdFiles(idDoc);
             if (document == null)
             {
                 return StatusCode(400);
@@ -68,7 +72,7 @@ namespace DocumentManager.API.Controllers
             {
                 var delFile = document.Files.FirstOrDefault(f => f.FileId == idFileLink);
                 document.Files.Remove(delFile);
-                await _repository.UpdateAsync(document);
+                await _repository.Change(document);
                 return StatusCode(204);
             }
             catch (Exception ex)
