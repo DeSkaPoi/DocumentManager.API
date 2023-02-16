@@ -12,6 +12,7 @@ namespace DocumentManager.Infrastructure.RepositoryDB
     public class DocumentRepositoryAsync : IDocumentRepositoryAsync, IDocumentDependentEntitiesAsync
     {
         private readonly DocManagerContext _context;
+        private readonly object _locker = new object();
         public DocumentRepositoryAsync(DocManagerContext context)
         {
             _context = context;
@@ -27,7 +28,11 @@ namespace DocumentManager.Infrastructure.RepositoryDB
         }
         public async Task Update(DocumentDataBase document)
         {
-            _context.Update(document);
+            lock (_locker)
+            {
+                _context.Update(document);
+            }
+            
             await _context.SaveChangesAsync();
         }
 
@@ -65,7 +70,7 @@ namespace DocumentManager.Infrastructure.RepositoryDB
 
         public async Task<DocumentDataBase> GetByIdPictures(Guid idDoc)
         {
-            var document = await _context.Documents.Where(docProp => docProp.Id == idDoc)
+            var document = await _context.Documents.AsNoTracking().Where(docProp => docProp.Id == idDoc)
                 .Include(d => d.Pictures)
                 .FirstOrDefaultAsync();
             return document;

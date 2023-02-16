@@ -29,7 +29,7 @@ namespace DocumentManager.API.Controllers
         {
             try
             {
-                var docFiles = await _repository.GetByIdFiles(idDoc);
+                var docFiles = await _repository.GetByIdPictures(idDoc);
                 var docResponse = docFiles.ConvertToResponse();
                 return docResponse;
             }
