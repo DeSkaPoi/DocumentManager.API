@@ -86,7 +86,7 @@ namespace DocumentManager.API.Controllers
             {
                 var documentModel = document.ConvertsToModel();
                 await _repository.Add(documentModel);
-                return StatusCode(201, document);
+                return StatusCode(201);
             }
             catch (Exception ex)
             {

@@ -1,6 +1,9 @@
 ﻿using DocumentManager.Infrastructure.ModelDB;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Text.Json;
 
 namespace DocumentManager.Infrastructure.ContextDB
 {
@@ -32,7 +35,9 @@ namespace DocumentManager.Infrastructure.ContextDB
                     .OnDelete(DeleteBehavior.Cascade).IsRequired();
 
                 document.Property(prop => prop.Title).HasDefaultValue("not indicated");
-                document.Property(prop => prop.Content).HasDefaultValue("not indicated");
+                document.Property(prop => prop.Content).HasConversion(
+                    p => JsonConvert.SerializeObject(p),
+                    p => JsonConvert.DeserializeObject<List<string>>(p));
                 document.Property(prop => prop.Description).HasDefaultValue("not indicated");
             });
 

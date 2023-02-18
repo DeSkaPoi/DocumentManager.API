@@ -9,7 +9,7 @@ namespace DocumentManager.API.Converts
     {
         public static Document ConvertsToModel(this DocumentResponse document)
         {
-            return new Document(document.Id, document.Content, document.Title, document.Description, document.CreationTime, document.LastUpdate,
+            return new Document(document.Id, document.Title, document.Content, document.Description, document.CreationTime, document.LastUpdate,
                 document.Files.Select(f => f.ConvertsToModel()).ToList(), document.Pictures.Select(f => f.ConvertsToModel()).ToList(), document.Videos.Select(f => f.ConvertsToModel()).ToList());
         }
         public static IReadOnlyList<Document> ConvertsToModel(this IReadOnlyList<DocumentResponse> document)

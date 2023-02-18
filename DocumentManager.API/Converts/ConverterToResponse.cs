@@ -10,7 +10,7 @@ namespace DocumentManager.API.Converts
     {
         public static DocumentResponse ConvertToResponse(this Document document)
         {
-            return new DocumentResponse(document.Id, document.Content, document.Title, document.Description, document.CreationTime, document.LastUpdate,
+            return new DocumentResponse(document.Id, document.Title, document.Content, document.Description, document.CreationTime, document.LastUpdate,
                 document.Files.Select(f => f.ConvertToResponse()).ToList(), document.Pictures.Select(f => f.ConvertToResponse()).ToList(), document.Videos.Select(f => f.ConvertToResponse()).ToList());
         }
         public static IReadOnlyList<DocumentResponse> ConvertToResponse(this IReadOnlyList<Document> document)

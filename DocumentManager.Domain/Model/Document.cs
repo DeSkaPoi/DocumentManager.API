@@ -8,7 +8,7 @@ namespace DocumentManager.Domain.Model
     {
         public Guid Id { get; }
         public string Title { get; }
-        public string Content { get; }
+        public List<string> Content { get; }
         public string Description { get; }
         public DateTime CreationTime { get; }
         public DateTime LastUpdate { get; }
@@ -23,7 +23,7 @@ namespace DocumentManager.Domain.Model
             Pictures = new List<PictureLink>();
             Videos = new List<VideoLink>();
         }
-        public Document(Guid id, string title, string content, string description, DateTime creationTime, DateTime lastUpdate,
+        public Document(Guid id, string title, List<string> content, string description, DateTime creationTime, DateTime lastUpdate,
             List<FileLink> fileLink, List<PictureLink> pictureLink, List<VideoLink> videoLink)
         {
             Id = id;

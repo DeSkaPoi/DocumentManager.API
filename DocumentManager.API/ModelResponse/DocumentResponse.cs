@@ -8,7 +8,7 @@ namespace DocumentManager.API.ModelResponse
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
-        public string Content { get; set; }
+        public List<string> Content { get; set; }
         public string Description { get; set; }
         public DateTime CreationTime { get; set; }
         public DateTime LastUpdate { get; set; }
@@ -24,7 +24,7 @@ namespace DocumentManager.API.ModelResponse
             Videos = new List<VideoLinkResponse>();
         }
 
-        public DocumentResponse(Guid id, string title, string content, string description, DateTime creationTime, DateTime lastUpdate,
+        public DocumentResponse(Guid id, string title, List<string> content, string description, DateTime creationTime, DateTime lastUpdate,
            List<FileLinkResponse> fileLink, List<PictureLinkResponse> pictureLink, List<VideoLinkResponse> videoLink)
         {
             Id = id;
