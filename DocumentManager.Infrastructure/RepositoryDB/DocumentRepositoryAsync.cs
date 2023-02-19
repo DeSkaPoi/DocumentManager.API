@@ -28,11 +28,7 @@ namespace DocumentManager.Infrastructure.RepositoryDB
         }
         public async Task Update(DocumentDataBase document)
         {
-            lock (_locker)
-            {
-                _context.Update(document);
-            }
-            
+            _context.Update(document);
             await _context.SaveChangesAsync();
         }
 
@@ -60,6 +56,16 @@ namespace DocumentManager.Infrastructure.RepositoryDB
             return document;
         }
 
+        public async Task<DocumentDataBase> GetByIdAsNoTracking(Guid idDoc)
+        {
+            var document = await _context.Documents.AsNoTracking().Where(docProp => docProp.Id == idDoc)
+                .Include(d => d.Files)
+                .Include(d => d.Pictures)
+                .Include(d => d.Videos)
+                .FirstOrDefaultAsync();
+            return document;
+        }
+
         public async Task<DocumentDataBase> GetByIdFiles(Guid idDoc)
         {
             var document = await _context.Documents.Where(docProp => docProp.Id == idDoc)
@@ -70,7 +76,7 @@ namespace DocumentManager.Infrastructure.RepositoryDB
 
         public async Task<DocumentDataBase> GetByIdPictures(Guid idDoc)
         {
-            var document = await _context.Documents.AsNoTracking().Where(docProp => docProp.Id == idDoc)
+            var document = await _context.Documents.Where(docProp => docProp.Id == idDoc)
                 .Include(d => d.Pictures)
                 .FirstOrDefaultAsync();
             return document;

@@ -42,17 +42,9 @@ namespace DocumentManager.API.Controllers
         [HttpPost("{idDoc:Guid}/{idVideo:Guid}")]
         public async Task<ActionResult<DocumentResponse>> PostVideoDocument(Guid idDoc, Guid idVideo)
         {
-            var document = await _repository.GetByIdVideos(idDoc);
-            if (document == null)
-            {
-                return StatusCode(400);
-            }
-
             try
             {
-                var videoLink = new VideoLink(new Guid(), idVideo);
-                document.Videos.Add(videoLink);
-                await _repository.Change(document);
+                await _repository.Add(idDoc, idVideo, "VideoLink");
                 return StatusCode(201);
             }
             catch (Exception ex)
@@ -65,17 +57,9 @@ namespace DocumentManager.API.Controllers
         [HttpDelete("{idDoc}/{idVideoLink}")]
         public async Task<IActionResult> DeleteVideoDocument(Guid idDoc, Guid idVideoLink)
         {
-            var document = await _repository.GetByIdVideos(idDoc);
-            if (document == null)
-            {
-                return StatusCode(400);
-            }
-
             try
             {
-                var delVideo = document.Videos.FirstOrDefault(f => f.Id == idVideoLink);
-                document.Videos.Remove(delVideo);
-                await _repository.Change(document);
+                await _repository.Remove(idDoc, idVideoLink);
                 return StatusCode(204);
             }
             catch (Exception ex)

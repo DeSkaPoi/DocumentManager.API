@@ -43,17 +43,9 @@ namespace DocumentManager.API.Controllers
         [HttpPost("{idDoc:Guid}/{idFile:Guid}")]
         public async Task<ActionResult<DocumentResponse>> PostFileDocument(Guid idDoc, Guid idFile)
         {
-            var document = await _repository.GetByIdFiles(idDoc);
-            if (document == null)
-            {
-                return StatusCode(400);
-            }
-
             try
             {
-                var fileLink = new FileLink(new Guid(), idFile);
-                document.Files.Add(fileLink);
-                await _repository.Change(document);
+                await _repository.Add(idDoc, idFile, "FileLink");
                 return StatusCode(201);
             }
             catch (Exception ex)
@@ -66,17 +58,9 @@ namespace DocumentManager.API.Controllers
         [HttpDelete("{idDoc}/{idFileLink}")]
         public async Task<IActionResult> DeleteFileDocument(Guid idDoc, Guid idFileLink)
         {
-            var document = await _repository.GetByIdFiles(idDoc);
-            if (document == null)
-            {
-                return StatusCode(400);
-            }
-
             try
             {
-                var delFile = document.Files.FirstOrDefault(f => f.FileId == idFileLink);
-                document.Files.Remove(delFile);
-                await _repository.Change(document);
+                await _repository.Remove(idDoc, idFileLink);
                 return StatusCode(204);
             }
             catch (Exception ex)
