@@ -89,5 +89,10 @@ namespace DocumentManager.Infrastructure.RepositoryDB
                 .FirstOrDefaultAsync();
             return document;
         }
+
+        public void ChangeTrackerClear()
+        {
+            _context.ChangeTracker.Clear();
+        }
     }
 }
